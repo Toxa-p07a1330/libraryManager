@@ -16,7 +16,14 @@ let Header = (props)=>{
     let textStyle = {
         fontSize:"50px",
         display: "inline-block",
+        width: "70%"
         
+    }
+    let registrStyle = {
+        display: "inline-block",
+        width: "10%",
+        marginRight: "0x"
+
     }
     return (
         <div id={"header"} style={style}>
@@ -25,6 +32,11 @@ let Header = (props)=>{
             </div>
             <div style={textStyle}>
                 Система управления книгами в библиотеке
+            </div>
+            <div style={registrStyle}>
+                {
+                 props.authorized?props.login:"Войти"
+                }
             </div>
         </div>
     );
