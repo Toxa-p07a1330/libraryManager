@@ -9,7 +9,7 @@ const http = require("http");
 
 //DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
 
-//todo implement
+
 class Book{
     id;
     name;
@@ -81,30 +81,33 @@ returns JSON string of rows ejected froms corresponding table with this fields
 
 function sendDataToClient(request, responseTarget){
     console.log(request);
-    let sqlite3 = require('sqlite3').verbose();
-    let db = new sqlite3.Database('../database/database.db');
-    let promise = new Promise((resolve, reject)=>{
-        db.serialize(()=>{
-            db.all(request, (err, rows)=>{
-                if (err)
-                    reject();
-                else
-                    resolve(rows);
+    function  getDataFromSQLite(request){
+        let promise;
+        let sqlite3 = require('sqlite3').verbose();
+        let db = new sqlite3.Database('../database/database.db');
+        promise = new Promise((resolve, reject)=>{
+            db.serialize(()=>{
+                db.all(request, (err, rows)=>{
+                    if (err)
+                        reject();
+                    else
+                        resolve(rows);
+                })
             })
-        })
-    });
+            db.close();
+        });
+        return promise;
+    }
 
-    promise.then(
+
+    getDataFromSQLite(request).then(
         (result)=> {
         console.log(result);
         responseTarget.write(JSON.stringify(result));
         responseTarget.end();
-        db.close();
-    },
-        (error)=>{
-            console.log(error);
 
-        }
+    },
+        (error)=>console.log(error)
     );
     return 1;
 }
@@ -113,6 +116,8 @@ function parser(tableName, args, responseTarget){
     let fields = Object.assign({}, tables.get(tableName));
     convertObjectToArgType(requestParamsToObjest(args), fields)
     let requestSQL = convertToSQLRequest(fields, tableName);
+    if (!args)
+        requestSQL = "SELECT * from " + tableName + ";";
     sendDataToClient(requestSQL, responseTarget);
 
 };
@@ -121,14 +126,20 @@ function parser(tableName, args, responseTarget){
 
 function requestParamsToObjest  (request){
     let obj = {};
-    let params = request.substr(request.indexOf("?")+1).split("&");
-    if (params.indexOf("favicon")<0){
-        for (let i of params)
-        {
-            let name = i.split("=")[0];
-            let val = i.split("=")[1];
-            obj[name] = val;
+    try {
+
+
+        let params = request.substr(request.indexOf("?") + 1).split("&");
+        if (params.indexOf("favicon") < 0) {
+            for (let i of params) {
+                let name = i.split("=")[0];
+                let val = i.split("=")[1];
+                obj[name] = val;
+            }
         }
+    }
+    catch (e){
+        console.log(e);
     }
     return obj;
 };
@@ -146,6 +157,8 @@ function convertObjectToArgType  (untypedObject, typedObject){
 }
 function convertToSQLRequest  (object, tableName){
 let request = "SELECT * FROM "+tableName+" WHERE ";
+    if (!Object.keys(object).length)
+        return  request.replace("where", ";");
     for (let i of Object.keys(object))
     {
         if (object[i]!==undefined)
@@ -156,6 +169,9 @@ let request = "SELECT * FROM "+tableName+" WHERE ";
     return request;
 }
 
+function registrate(url){
+    console.log(url)        //todo implement
+}
 
 http.createServer(function(request, response){
 
@@ -169,7 +185,10 @@ http.createServer(function(request, response){
         if (request.url.indexOf("api")<0)
             response.end()
         else {
-            parceRequest(request.url, response);
+            if (request.url.split("/")[2]=="registration")
+                registrate(request.url);
+            else
+                parceRequest(request.url, response);
         }
     }
 

@@ -1,10 +1,12 @@
 import React from 'react';
 import Header from "./Header";
 import Sidemenu from "./Sidemenu";
+import Content from "./Content";
 
-function get_cookie ( cookie_name )
+
+function getCookie ( cookieName )
 {
-    let results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
+    let results = document.cookie.match ( '(^|;) ?' + cookieName + '=([^;]*)(;|$)' );
     if ( results )
         return ( unescape ( results[2] ) );
     else
@@ -29,8 +31,10 @@ class App extends React.Component{
     render(){
         return(
             <div id={"app"} style={this.style}>
-                <Header authorized={get_cookie("login")} login={get_cookie("login")}> </Header>
+                <Header authorized={getCookie("login")} login={getCookie("login")}> </Header>
                 <Sidemenu isAdmin={this.state.isAdmin}></Sidemenu>
+                <Content ></Content>
+
             </div>
     )
     };
