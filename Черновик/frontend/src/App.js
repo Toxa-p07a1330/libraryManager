@@ -2,7 +2,8 @@ import React from 'react';
 import Header from "./Header";
 import Sidemenu from "./Sidemenu";
 import Content from "./Content";
-
+import store from "./store";
+import Provider from "react-redux/lib/components/Provider";
 
 function getCookie ( cookieName )
 {
@@ -30,12 +31,13 @@ class App extends React.Component{
     }
     render(){
         return(
-            <div id={"app"} style={this.style}>
-                <Header authorized={getCookie("login")} login={getCookie("login")}> </Header>
-                <Sidemenu isAdmin={this.state.isAdmin}></Sidemenu>
-                <Content ></Content>
-
-            </div>
+            <Provider store={store}>
+                <div id={"app"} style={this.style}>
+                    <Header authorized={getCookie("login")} login={getCookie("login")}> </Header>
+                    <Sidemenu isAdmin={this.state.isAdmin}></Sidemenu>
+                    <Content ></Content>
+                </div>
+            </Provider>
     )
     };
 }

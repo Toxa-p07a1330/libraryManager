@@ -1,4 +1,5 @@
 import React from 'react';
+import store from "./store";
 
 let Header = (props)=>{
     let style = {
@@ -33,7 +34,7 @@ let Header = (props)=>{
             <div style={textStyle}>
                 Система управления книгами в библиотеке
             </div>
-            <div style={registrStyle}>
+            <div style={registrStyle} onClick={store.getState}>
                 {
                  props.authorized?props.login:"Войти"
                 }
