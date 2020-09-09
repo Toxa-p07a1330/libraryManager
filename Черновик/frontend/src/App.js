@@ -2,8 +2,7 @@ import React from 'react';
 import Header from "./Header";
 import Sidemenu from "./Sidemenu";
 import Content from "./Content";
-import {connect} from "react-redux"
-import {adminTogglerCreator} from "./actionCreators";
+
 
 function getCookie ( cookieName )
 {
@@ -41,8 +40,3 @@ class App extends React.Component{
     };
 }
 export default App;
-
-export const ConnectedApp = connect(
-    (store)=>{ return store.isAdmin},
-    {adminTogglerCreator}
-)(App);
