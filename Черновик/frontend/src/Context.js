@@ -7,7 +7,11 @@ class Context extends React.Component{
         this.state = {
             isAuth: false,
             isAdmin: false,
-            login: 'admin'
+            login: 'admin',
+            toggleAdmin: ()=>{
+                this.isAdmin = ! this.isAdmin;
+                console.log("admin")
+            }
         }
     }
     render() {
