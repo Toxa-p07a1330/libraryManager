@@ -1,4 +1,5 @@
 import React from 'react';
+import {UserContext} from "./Context";
 
 let Header = (props)=>{
     let style = {
@@ -26,19 +27,25 @@ let Header = (props)=>{
 
     }
     return (
-        <div id={"header"} style={style}>
-            <div style={imageStyle}>
-                <img style={imageStyle} src={"https://parfumciel.ru/wp-content/uploads/2018/11/icon_Publications.png"} />
-            </div>
-            <div style={textStyle}>
-                Система управления книгами в библиотеке
-            </div>
-            <div style={registrStyle}>
-                {
-                 props.authorized?props.login:"Войти"
-                }
-            </div>
-        </div>
+        <UserContext.Consumer>
+            {(context)=>{
+                return (
+                    <div id={"header"} style={style}>
+                        <div style={imageStyle}>
+                            <img style={imageStyle} src={"https://parfumciel.ru/wp-content/uploads/2018/11/icon_Publications.png"} />
+                        </div>
+                        <div style={textStyle}>
+                            Система управления книгами в библиотеке
+                        </div>
+                        <div style={registrStyle}>
+                            {
+                                context.isAuth?context.login:"Войти"
+                            }
+                        </div>
+                    </div>
+                )
+            }}
+        </UserContext.Consumer>
     );
 }
 export  default Header;

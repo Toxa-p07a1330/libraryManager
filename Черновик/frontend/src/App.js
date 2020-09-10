@@ -2,7 +2,7 @@ import React from 'react';
 import Header from "./Header";
 import Sidemenu from "./Sidemenu";
 import Content from "./Content";
-
+import {UserContext} from "./Context";
 
 function getCookie ( cookieName )
 {
@@ -30,11 +30,10 @@ class App extends React.Component{
     }
     render(){
         return(
-            <div id={"app"} style={this.style}>
-                <Header authorized={getCookie("login")} login={getCookie("login")}> </Header>
-                <Sidemenu isAdmin={this.state.isAdmin}></Sidemenu>
-                <Content ></Content>
-
+            <div style={this.style}>
+                 <Header/>
+                 <Sidemenu/>
+                 <Content/>
             </div>
     )
     };
