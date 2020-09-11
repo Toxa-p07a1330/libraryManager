@@ -51,7 +51,8 @@ class Login extends React.Component{
                                     <div>Запомнить меня на этом устройстве
                                         <input type={"checkbox"} name="remember" id = "remember"/>
                                     </div>
-                                    <input type="button" value="Войти" onClick={()=>{
+                                    <a href={"/home"}>
+                                        <input type="button" value="Войти" onClick={()=>{
                                         let login = document.getElementById("login").value;
                                         let password = document.getElementById("password").value;
                                         let remember = document.getElementById("remember").checked;;
@@ -66,8 +67,11 @@ class Login extends React.Component{
                                                             context.toggleAdmin();
                                                             setCookie("isAdmin", json[0].isAdmin)
                                                         };
-                                                        if (!remember)
-                                                            window.onunload = ()=>{context.exit()};
+                                                        if (remember){
+                                                            document.cookie = "isAdmin= ; expires = Thu, 01 Jan 2038 00:00:00 GMT";
+                                                            document.cookie = "login= ; expires = Thu, 01 Jan 2038 00:00:00 GMT"
+                                                        }
+
                                                     }
                                                     else
                                                         alert("Неправильный логин или пароль");
@@ -76,6 +80,7 @@ class Login extends React.Component{
                                             (reject)=>{console.log(reject)}
                                         )
                                     }}/>
+                                        </a>
                                 </form>
 
                                 <div>

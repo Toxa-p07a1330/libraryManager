@@ -7,7 +7,8 @@ import Books from "./Books";
 import Login from "./Login";
 import {UserContext} from "./Context";
 import Profile from "./Profile";
-
+import Storages from "./Storages";
+import Users from "./Users";
 class Content extends React.Component{
 
     render() {
@@ -30,12 +31,9 @@ class Content extends React.Component{
                                    <Route exact path="/registration" component={Registration} />
                                    <Route exact path="/authors" component={Authors} />
                                    <Route exact path="/profile" component={Profile} />
-                                   <Route exact path="/login" render={(context)=>{
-                                       if(context.isAuth)
-                                           return <Home/>
-                                       else
-                                           return <Login/>
-                                   }} />
+                                   <Route exact path="/storages" component={Storages}/>
+                                   <Route exact path= "/users" component={Users}/>
+                                   <Route exact path="/login" component={Login}/>
                                </Switch>
                            </BrowserRouter>
                        </div>

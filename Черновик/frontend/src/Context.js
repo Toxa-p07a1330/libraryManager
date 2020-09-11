@@ -30,7 +30,7 @@ class Context extends React.Component{
                 console.log(login+ " logged");
             },
             exit:()=>{
-                this.setState({isAuth: false, isAdmin: false});
+                this.setState({isAuth: false, isAdmin: false, login:null});
                 document.cookie = "isAdmin= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
                 document.cookie = "login= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
             },

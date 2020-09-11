@@ -173,8 +173,14 @@ let request = "SELECT * FROM "+tableName+" WHERE ";
 }
 
 
-function writeNewUserToDatabase(){
-    //todo implement
+function writeNewUserToDatabase(user){
+    let request = `INSERT INTO user (fName, sName, tName, login, password, email, mobilePhone, wasBorn) 
+    VALUEs(\'${user.fName}\', \'${user.sName}\', \'${user.tName}\', \'${user.login}\',
+         \'${user.password}\', \'${user.email}\', \'${user.mobilePhone}\', \'${user.wasBorn}\')`;
+    console.log(request);
+    getDataFromSQLite(request).then(
+        (response)=>{console.log(response)},
+        (reject)=>{console.log(reject)});
 }
 function registrate(url, response){
     let user = requestParamsToObjest(url);
@@ -189,7 +195,7 @@ function registrate(url, response){
                                 (responseEmail)=>{
                                     if (responseEmail.length===0){
                                         response.write("{success: true}");
-                                        writeNewUserToDatabase();
+                                        writeNewUserToDatabase(user);
                                         response.end();
                                     }
                                     else {
