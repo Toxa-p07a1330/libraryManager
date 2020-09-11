@@ -21,7 +21,7 @@ class Registration extends React.Component{
 
             console.log(context.wayToApi+"registration/")
             if (password!==rPassword)
-                alert("Пароли не совпадают")
+                alert("Пароли не совпадают ")
             else {
                 fetch(context.wayToApi+"registration/?fName="+fName+"&"+"sName="+sName+"&"+"tName="+tName+"&" +
                     "login="+login+"&"+"password="+password+"&"+"email="+email+"&mobilePhone="+mobilePhone+
