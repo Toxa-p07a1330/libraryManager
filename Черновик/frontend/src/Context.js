@@ -10,8 +10,8 @@ class Context extends React.Component{
             login: 'admin',
             toggleAdmin: ()=>{
                 this.isAdmin = ! this.isAdmin;
-                console.log("admin")
-            }
+            },
+            wayToApi:document.location.protocol+"//"+document.location.host.replace('3000', '3001')+"/api/"
         }
     }
     render() {

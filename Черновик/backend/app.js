@@ -169,9 +169,14 @@ let request = "SELECT * FROM "+tableName+" WHERE ";
     return request;
 }
 
-function registrate(url){
+function registrate(url, response){
     console.log(url)        //todo implement
 }
+
+function tryLogin(url, response){
+    console.log(url)        //todo implement
+}
+
 
 http.createServer(function(request, response){
 
@@ -185,10 +190,13 @@ http.createServer(function(request, response){
         if (request.url.indexOf("api")<0)
             response.end()
         else {
-            if (request.url.split("/")[2]=="registration")
-                registrate(request.url);
+            if (request.url.split("/")[2]==="registration")
+                registrate(request.url, response);
             else
-                parceRequest(request.url, response);
+                if (request.url.split("/")[2]==="login")
+                    tryLogin(request.url, response)
+                else
+                    parceRequest(request.url, response);
         }
     }
 

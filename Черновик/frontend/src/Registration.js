@@ -9,7 +9,9 @@ class Registration extends React.Component{
                    (context)=>{
                        return (
                            <div>
-                               <button onClick={context.toggleAdmin}>Кнопка</button>        //todo remove debug code
+                              <form>
+                                  <input type={"text"} name="login"/>
+                              </form>
                            </div>
                        )
                    }

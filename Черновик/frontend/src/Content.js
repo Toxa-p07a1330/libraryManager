@@ -4,12 +4,19 @@ import Authors from "./Authors";
 import Home from "./Home";
 import Registration from "./Registration";
 import Books from "./Books";
+import Login from "./Login";
 
 class Content extends React.Component{
 
     render() {
+        let style = {
+            display: "inline-block",
+            marginRight: "0px",
+            padding: "1%",
+
+        }
         return (
-            <div>
+            <div style={style}>
                 <BrowserRouter>
                     <Switch>
                         <Route exact path="/" component={Home} />
@@ -17,6 +24,7 @@ class Content extends React.Component{
                         <Route exact path="/books" component={Books} />
                         <Route exact path="/registration" component={Registration} />
                         <Route exact path="/authors" component={Authors} />
+                        <Route exact path="/login" component={Login} />
                     </Switch>
                 </BrowserRouter>
             </div>

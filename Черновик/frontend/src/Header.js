@@ -7,6 +7,9 @@ let Header = (props)=>{
         height:"20%",
         display: "inline-block",
         backgroundColor : "",
+        borderColor: "#cfc78c",
+        borderStyle: "inset",
+        borderWidth: "5px",
     }
     let imageStyle = {
         height: "100%",
