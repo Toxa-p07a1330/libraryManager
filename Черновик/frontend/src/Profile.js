@@ -16,8 +16,8 @@ class Profile extends React.Component{
                 {
                     (context)=>{
                         {
-
                             let wayToAPI = context.wayToApi+"user/?login="+context.login;
+                            let newState = {};
                             console.log(wayToAPI)
                             if (!this.state.isLoaded)
                             {
@@ -26,7 +26,27 @@ class Profile extends React.Component{
                                         response.json().then(
                                             (json)=>{
                                                 console.log(json)
-                                                this.setState( json[0]);
+                                                newState = json[0];
+                                                wayToAPI = context.wayToApi+"book/?takersID="+newState.id;
+                                                console.log(wayToAPI)
+                                                fetch(wayToAPI).then(
+                                                    (response)=>{
+                                                        response.json().then(
+                                                            (json)=>{
+                                                                console.log(json)
+                                                                let booksInfo = {booksInfo: json}
+                                                                newState = Object.assign(newState, booksInfo);
+                                                                this.setState( newState);
+                                                            },
+                                                            (reject)=>{
+                                                                console.log(reject)
+                                                            }
+                                                        )
+                                                    },
+                                                    (reject)=>{
+                                                        console.log(reject)
+                                                    });
+                                                this.setState({isLoaded: true});
 
                                             },
                                             (reject)=>{
@@ -37,24 +57,8 @@ class Profile extends React.Component{
                                     (reject)=>{
                                         console.log(reject)
                                     });
-                                wayToAPI = context.wayToApi+"book/?takersID="+this.state.id;
-                                console.log(wayToAPI)
-                                fetch(wayToAPI).then(
-                                    (response)=>{
-                                        response.json().then(
-                                            (json)=>{
-                                                console.log(json)
-                                                this.setState( {booksInfo: json[0]});
-                                            },
-                                            (reject)=>{
-                                                console.log(reject)
-                                            }
-                                        )
-                                    },
-                                    (reject)=>{
-                                        console.log(reject)
-                                    });
-                                this.setState({isLoaded: true});
+
+
                             }
                         }
                         return(
@@ -68,7 +72,7 @@ class Profile extends React.Component{
                                 <div>Номер телефона: {this.state.mobilePhone}</div>
                                 <div>email: {this.state.email}</div>
                                 <div> Роль: {this.state.isAdmin?"Администратор":"Читатель"}</div>
-                                <div>Число взятых книг: {JSON.stringify(this.state)}</div>
+                                <div>Число взятых книг: {this.state.booksInfo.length}</div>
                             </div>
                         )
                     }
