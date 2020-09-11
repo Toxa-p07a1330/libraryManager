@@ -1,60 +1,51 @@
 import React from "react";
-import User from "./User";
 import {UserContext} from "./Context";
- class Users extends   React.Component{
-     constructor() {
-         super();
-         this.state = {
-             isLoaded: false,
-             users: [],
-             wayToApi: "",
-             setWayToApi:(way)=>{
-                 this.wayToApi = way;
-             }
-         }
+import User from "./User";
 
-     }
-     render(){
+class Users extends React.Component{
+    constructor() {
+        super();
+        this.state = {
 
-         return(
-             <UserContext.Consumer>
-                 {
-                     (context)=>{
-                         let users = [];
-                         if (!this.state.isLoaded){
-                             this.setState({isLoaded: true})
-                             fetch(context.wayToApi+"user").then(
-                                 (response)=>{
-                                     response.json().then(
-                                         (json)=>{
-                                             let count=0;
-                                             for (let i of json)
-                                             {
-                                                 i.key = i.id;
-                                                 users[count++]=<User key = {i.key} data={JSON.stringify(i)}/>;
-                                             }
-                                             console.log(users);
-                                             this.setState({users:users});
-                                         },
-                                         (reject)=>{
-                                             console.log(reject);
-                                         }
-                                     )
-                                 },
-                                 (reject)=>{
-                                     console.log(reject);
-                                 }
-                             )
-                         }
-                         return(<div>
+        }
+    }
+    style = {
+        display:"inline-block",
+        align: "right",
+        widths: "70%"
+    }
+    render() {
+        return(<UserContext.Consumer>
+                {(context)=>{
+                    fetch(context.wayToApi+"user").then(
+                        (response)=>{
+                            response.json().then(
+                                (json)=>{
+                                    console.log(123)
+                                    if(this.state.users === undefined){
+                                        this.setState({users:json})
+                                        console.log(json)
+                                    }
+                                },
+                                reason =>console.log(reason)
+                            )
+                        },
+                        (reject)=>{
+                            console.log(reject)
+                        }
+                    )
+                    return(<div style={this.style}>
+                        {
+                            this.state.users!==undefined?this.state.users.map((value, index)=>{
+                                context.addToStack(value.id);
+                                return <User/>
+                            }):""
+                        }
+                    </div>)
+                }}
+            </UserContext.Consumer>
+        )
+    }
+}
 
-                                </div>
-                     )
-                     }
-                 }
-             </UserContext.Consumer>
-         )
-     }
- }
-
- export default Users
+export default Users

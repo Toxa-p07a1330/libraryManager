@@ -14,8 +14,9 @@ class Content extends React.Component{
     render() {
         let style = {
             display: "inline-block",
-            marginRight: "0px",
+            align: "right",
             padding: "1%",
+            width: "75%"
 
         }
         return (

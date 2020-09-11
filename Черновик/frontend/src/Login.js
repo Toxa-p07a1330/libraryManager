@@ -68,8 +68,8 @@ class Login extends React.Component{
                                                             setCookie("isAdmin", json[0].isAdmin)
                                                         };
                                                         if (remember){
-                                                            document.cookie = "isAdmin= ; expires = Thu, 01 Jan 2038 00:00:00 GMT";
-                                                            document.cookie = "login= ; expires = Thu, 01 Jan 2038 00:00:00 GMT"
+                                                            document.cookie = `isAdmin= ${ json[0].isAdmin}; expires = Thu, 01 Jan 2038 00:00:00 GMT`;
+                                                            document.cookie = `login= ${json[0].login}; expires = Thu, 01 Jan 2038 00:00:00 GMT`;
                                                         }
 
                                                     }

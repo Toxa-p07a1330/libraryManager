@@ -38,7 +38,21 @@ class Context extends React.Component{
             toggleClearDataOnExit: ()=>{
                 this.setState({clearDataOnExit : !this.clearDataOnExit})
             },
-            wayToApi:document.location.protocol+"//"+document.location.host.replace('3000', '3001')+"/api/"
+            wayToApi:document.location.protocol+"//"+document.location.host.replace('3000', '3001')+"/api/",
+            stack: {
+                size:0,
+            },
+            addToStack: (push)=>{
+                this.state.stack.size++;
+                this.state.stack["id_"+(this.state.stack.size-1)]=push
+            },
+            removeFromStack: ()=>{
+                let reterner = this.state.stack["id_"+(this.state.stack.size-1)];
+                this.state.stack["id_"+(this.state.stack.size-1)] = null;
+                this.state.stack.size--;
+                return reterner;
+            }
+
         }
     }
     render() {
