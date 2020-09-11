@@ -1,4 +1,6 @@
 import React from 'react';
+import {UserContext} from "./Context";
+
 class Sidemenu extends React.Component{
     style= {
         borderColor: "#cfc78c",
@@ -11,17 +13,23 @@ class Sidemenu extends React.Component{
     }
     render(props) {
         return (
-            <div style={this.style}>
-                <ul>
-                    <li><a>Главная</a></li>
-                    <li><a>Книги</a></li>
-                    <li><a>Авторы</a></li>
-                    <li><a>Отделения библиотеки</a></li>
-                    {this.props.isAdmin?<li><a>Пользователи</a></li>:""}
-                    {this.props.isAdmin?<li><a>История операций</a></li>:""}
-                    {this.props.isAdmin?<li><a>Статистика</a></li>:""}
-                </ul>
-            </div>
+            <UserContext.Consumer>
+                {(context)=>{
+                    return (
+                        <div style={this.style}>
+                            <ul>
+                                <li><a>Главная</a></li>
+                                <li><a>Книги</a></li>
+                                <li><a>Авторы</a></li>
+                                <li><a>Отделения библиотеки</a></li>
+                                {context.isAdmin?<li><a>Пользователи</a></li>:""}
+                                {context.isAdmin?<li><a>История операций</a></li>:""}
+                                {context.isAdmin?<li><a>Статистика</a></li>:""}
+                            </ul>
+                        </div>
+                    )
+                }}
+            </UserContext.Consumer>
         );
     }
 }

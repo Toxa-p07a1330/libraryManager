@@ -174,7 +174,8 @@ function registrate(url, response){
 }
 
 function tryLogin(url, response){
-    console.log(url)        //todo implement
+    url = url.replace("login", "user")
+    parceRequest(url, response)
 }
 
 
@@ -183,6 +184,8 @@ http.createServer(function(request, response){
     request.url = decodeURI(request.url);
     initializeMap();
     response.setHeader("Content-Type", "application/json; charset=UTF-8");
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin, Cache-Control");
     response.statusCode = 200;
     if (request.url.indexOf("favicon")>-1)
         response.end();

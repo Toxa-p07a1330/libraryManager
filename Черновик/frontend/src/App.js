@@ -4,14 +4,7 @@ import Sidemenu from "./Sidemenu";
 import Content from "./Content";
 import {UserContext} from "./Context";
 
-function getCookie ( cookieName )
-{
-    let results = document.cookie.match ( '(^|;) ?' + cookieName + '=([^;]*)(;|$)' );
-    if ( results )
-        return ( unescape ( results[2] ) );
-    else
-        return null;
-}
+
 
 class App extends React.Component{
     constructor(props) {

@@ -1,6 +1,31 @@
 import React from "react";
 import {UserContext} from "./Context";
 
+
+function setCookie(name, value, options = {}) {
+
+    options = {
+        path: '/',
+      ...options
+    };
+
+    if (options.expires instanceof Date) {
+        options.expires = options.expires.toUTCString();
+    }
+
+    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+    for (let optionKey in options) {
+        updatedCookie += "; " + optionKey;
+        let optionValue = options[optionKey];
+        if (optionValue !== true) {
+            updatedCookie += "=" + optionValue;
+        }
+    }
+
+    document.cookie = updatedCookie;
+}
+
 class Login extends React.Component{
     render() {
 
@@ -12,7 +37,7 @@ class Login extends React.Component{
             <UserContext.Consumer>
                 {
                     (context)=>{
-
+                        let remember = false;
                         return (
                             <div>
                                 <form>
@@ -23,13 +48,35 @@ class Login extends React.Component{
                                     <div>Пароль
                                         <input type={"text"} name="password" id = "password"/>
                                     </div>
-                                    <input type="button" value="Отправить" onClick={()=>{
+                                    <div>Запомнить меня на этом устройстве
+                                        <input type={"checkbox"} name="remember" id = "remember"/>
+                                    </div>
+                                    <input type="button" value="Войти" onClick={()=>{
 
                                         let login = document.getElementById("login").value;
                                         let password = document.getElementById("password").value;
+                                        let remember = document.getElementById("remember").checked;;
                                         let api = context.wayToApi + `login/?login=${login}&password=${password}`;
-                                        console.log(api)
-                                        let users = fetch(api);
+                                        fetch(api).then(
+                                            (response)=>{
+                                                response.json().then((json)=>{
+
+                                                    if (json[0]){
+                                                        context.setAuth(json[0].login)
+                                                        if(remember)
+                                                            setCookie("login", login);
+                                                        if (json[0].isAdmin){
+                                                            context.toggleAdmin();
+                                                            if(remember)
+                                                                setCookie("isAdmin", json[0].isAdmin)
+                                                        };
+                                                    }
+                                                    else
+                                                        alert("Неправильный логин или пароль");
+                                                });
+                                            },
+                                            (reject)=>{console.log(reject)}
+                                        )
                                     }}/>
                                 </form>
                             </div>
