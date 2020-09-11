@@ -29,6 +29,15 @@ class Context extends React.Component{
                 this.setState({login: login});
                 console.log(login+ " logged");
             },
+            exit:()=>{
+                this.setState({isAuth: false, isAdmin: false});
+                document.cookie = "isAdmin= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+                document.cookie = "login= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+            },
+            clearDataOnExit: true,
+            toggleClearDataOnExit: ()=>{
+                this.setState({clearDataOnExit : !this.clearDataOnExit})
+            },
             wayToApi:document.location.protocol+"//"+document.location.host.replace('3000', '3001')+"/api/"
         }
     }

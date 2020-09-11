@@ -19,17 +19,16 @@ class App extends React.Component{
         backgroundColor:"#ddd8b1",
         fontFamily: "Courier monospace",
         minHeight: window.innerHeight,
-
-
     }
+    exit = ()=>{};
     render(){
         return(
             <div style={this.style}>
-                 <Header/>
-                 <Sidemenu/>
-                 <Content/>
+                <Header/>
+                <Sidemenu/>
+                <Content/>
             </div>
-    )
-    };
+        )
+    }
 }
 export default App;

@@ -37,7 +37,6 @@ class Login extends React.Component{
             <UserContext.Consumer>
                 {
                     (context)=>{
-                        let remember = false;
                         return (
                             <div>
                                 <form>
@@ -52,7 +51,6 @@ class Login extends React.Component{
                                         <input type={"checkbox"} name="remember" id = "remember"/>
                                     </div>
                                     <input type="button" value="Войти" onClick={()=>{
-
                                         let login = document.getElementById("login").value;
                                         let password = document.getElementById("password").value;
                                         let remember = document.getElementById("remember").checked;;
@@ -60,16 +58,15 @@ class Login extends React.Component{
                                         fetch(api).then(
                                             (response)=>{
                                                 response.json().then((json)=>{
-
                                                     if (json[0]){
                                                         context.setAuth(json[0].login)
-                                                        if(remember)
-                                                            setCookie("login", login);
+                                                        setCookie("login", login);
                                                         if (json[0].isAdmin){
                                                             context.toggleAdmin();
-                                                            if(remember)
-                                                                setCookie("isAdmin", json[0].isAdmin)
+                                                            setCookie("isAdmin", json[0].isAdmin)
                                                         };
+                                                        if (!remember)
+                                                            window.onunload = ()=>{context.exit()};
                                                     }
                                                     else
                                                         alert("Неправильный логин или пароль");

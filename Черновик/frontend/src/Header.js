@@ -42,7 +42,8 @@ let Header = (props)=>{
                         </div>
                         <div style={registrStyle}>
                             {
-                                context.isAuth?context.login:"Войти"
+                                context.isAuth?<a href="/profile"><button>Профиль: {context.login}</button></a>
+                                    :<a href="/login"><button>Войти</button></a>
                             }
                         </div>
                     </div>

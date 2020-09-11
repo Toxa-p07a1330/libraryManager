@@ -27,6 +27,7 @@ class Profile extends React.Component{
                                             (json)=>{
                                                 console.log(json)
                                                 newState = json[0];
+                                                console.log(newState)
                                                 wayToAPI = context.wayToApi+"book/?takersID="+newState.id;
                                                 console.log(wayToAPI)
                                                 fetch(wayToAPI).then(
@@ -64,7 +65,6 @@ class Profile extends React.Component{
                         return(
 
                             <div>
-
                                 <div>Фамилия: {this.state.sName}</div>
                                 {this.state.fName?<div>Имя: {this.state.fName}</div>:""}
                                 {this.state.tName?<div>Отчество: {this.state.tName}</div>:""}
@@ -72,7 +72,14 @@ class Profile extends React.Component{
                                 <div>Номер телефона: {this.state.mobilePhone}</div>
                                 <div>email: {this.state.email}</div>
                                 <div> Роль: {this.state.isAdmin?"Администратор":"Читатель"}</div>
-                                <div>Число взятых книг: {this.state.booksInfo.length}</div>
+                                <div>Число взятых книг: {this.state.booksInfo?this.state.booksInfo.length:0}</div>
+                                {this.state.booksInfo?this.state.booksInfo.map((book)=>{return (
+                                    <div style={{marginLeft:"10%"}}>
+                                        {"\""+book.name+"\""}
+                                    </div>
+                                )}):""}
+                                {this.state.isBanned?<div> Вы заблокированы. Причина { this.state.banReason}</div>:""}
+                                <a href="/home"><button onClick={context.exit}>Выйти</button></a>
                             </div>
                         )
                     }
@@ -83,7 +90,3 @@ class Profile extends React.Component{
 }
 export default Profile;
 
-/*
-* let wayToAPI = context.wayToApi+"/user/?login="+context.login;
-
-                            * */
