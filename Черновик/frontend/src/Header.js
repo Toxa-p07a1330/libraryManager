@@ -10,6 +10,7 @@ let Header = (props)=>{
         borderColor: "#cfc78c",
         borderStyle: "inset",
         borderWidth: "5px",
+        verticalAlign:"center",
     }
     let imageStyle = {
         height: "100%",
@@ -26,7 +27,7 @@ let Header = (props)=>{
     let registrStyle = {
         display: "inline-block",
         width: "10%",
-        marginRight: "0x"
+        marginRight: "0x",
 
     }
     return (

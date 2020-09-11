@@ -79,30 +79,35 @@ returns JSON string of rows ejected froms corresponding table with this fields
 */
 
 
-function sendDataToClient(request, responseTarget){
-    console.log(request);
-    function  getDataFromSQLite(request){
-        let promise;
-        let sqlite3 = require('sqlite3').verbose();
-        let db = new sqlite3.Database('../database/database.db');
-        promise = new Promise((resolve, reject)=>{
-            db.serialize(()=>{
-                db.all(request, (err, rows)=>{
-                    if (err)
-                        reject();
-                    else
-                        resolve(rows);
-                })
+function  getDataFromSQLite(request){
+    let promise;
+    console.log(request)
+    let sqlite3 = require('sqlite3').verbose();
+    let db = new sqlite3.Database('../database/database.db');
+
+    promise = new Promise((resolve, reject)=>{
+        db.serialize(()=>{
+            db.all(request, (err, rows)=>{
+                if (err)
+                    reject(err);
+                else
+                    resolve(rows);
+
             })
-            db.close();
-        });
-        return promise;
-    }
+        })
+        db.close();
+    });
+    return promise;
+}
+
+function sendDataToClient(request, responseTarget){
+   // console.log(request);
+
 
 
     getDataFromSQLite(request).then(
         (result)=> {
-        console.log(result);
+        //console.log(result);
         responseTarget.write(JSON.stringify(result));
         responseTarget.end();
 
@@ -127,8 +132,6 @@ function parser(tableName, args, responseTarget){
 function requestParamsToObjest  (request){
     let obj = {};
     try {
-
-
         let params = request.substr(request.indexOf("?") + 1).split("&");
         if (params.indexOf("favicon") < 0) {
             for (let i of params) {
@@ -169,8 +172,58 @@ let request = "SELECT * FROM "+tableName+" WHERE ";
     return request;
 }
 
+
+function writeNewUserToDatabase(){
+    //todo implement
+}
 function registrate(url, response){
-    console.log(url)        //todo implement
+    let user = requestParamsToObjest(url);
+    let keys = ["login", "mobliePhone", "email"];
+    getDataFromSQLite("SELECT * FROM USER WHERE LOGIN= \'"+user.login+"\'").then(
+        (responseLogin)=>{
+            if (responseLogin.length===0){
+                getDataFromSQLite("SELECT * FROM USER WHERE mobilePhone= \'"+user.mobilePhone+"\'").then(
+                    (responseMobile)=>{
+                        if (responseMobile.length===0){
+                            getDataFromSQLite("SELECT * FROM USER WHERE email= \'"+user.email+"\'").then(
+                                (responseEmail)=>{
+                                    if (responseEmail.length===0){
+                                        response.write("{success: true}");
+                                        writeNewUserToDatabase();
+                                        response.end();
+                                    }
+                                    else {
+                                        response.write("{email: false}");
+                                        response.end();
+                                    }
+                                },
+                                (reject)=>{
+                                    console.log(reject)
+                                }
+                            )
+                        }
+                        else {
+                            response.write("{mobilePhone: false}");
+                            response.end();
+                        }
+                    },
+                    (reject)=>{
+                        console.log(reject)
+                    }
+                )
+            }
+            else {
+                response.write("{login: false}");
+                response.end();
+            }
+
+        },
+        (reject)=>{
+            console.log(reject)
+        }
+    )
+
+
 }
 
 function tryLogin(url, response){

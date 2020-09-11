@@ -30,15 +30,16 @@ class Login extends React.Component{
     render() {
 
         let style = {
-            left: "50%",
-            top: "50%",
+            paddingLeft: "100%",
+            marginTop: "50%",
+            display: "inline-block"
         }
         return (
             <UserContext.Consumer>
                 {
                     (context)=>{
                         return (
-                            <div>
+                            <div style={style}>
                                 <form>
                                     <div>
                                         Логин
@@ -76,6 +77,10 @@ class Login extends React.Component{
                                         )
                                     }}/>
                                 </form>
+
+                                <div>
+                                    Не зарегестиророваны? <a href={"registration"}>Зарегистрироваться!</a>
+                                </div>
                             </div>
                         )
                     }

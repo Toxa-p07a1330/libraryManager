@@ -8,8 +8,9 @@ class Sidemenu extends React.Component{
         borderWidth: "5px",
         display:"inline-block",
         align: "left",
-        width:"15%",
-        minHeight:"100%"
+        padding: "1%",
+        minHeight:"100%",
+        verticalAlign:"top",
     }
     render(props) {
         return (
