@@ -2,8 +2,25 @@ import React from "react";
 import {UserContext} from "./Context";
 
 
-function block(){
-    let reason = window.prompt("Причина?")
+function toggleBlock(id, isBanned, wayToApi, _this){
+    let reason="";
+    if(!isBanned)
+        reason = window.prompt("Причина?")
+    let url = wayToApi+"toggleBlock/?id="+id+"&isBanned="+isBanned+"&reason="+reason;
+    fetch(url).then(()=>{
+        _this.setState({isBanned: !isBanned})
+    }, (reject)=>{
+        console.log(reject)
+    })
+}
+function toggleAdmin(id, isAdmin, wayToApi, _this){
+
+    let url = wayToApi+"toggleAdmin/?id="+id+"&isAdmin="+isAdmin;
+    fetch(url).then(()=>{
+       _this.setState({isAdmin: !isAdmin})
+    }, (reject)=>{
+        console.log(reject)
+    })
 }
 class User extends React.Component{
     constructor() {
@@ -19,11 +36,15 @@ class User extends React.Component{
         width: "31%",
         height: "40%",
         padding: "1%",
+        borderColor: "#cfc78c",
+        borderStyle: "inset",
+        borderWidth: "2px",
     }
 
 
 
     render() {
+
         return (
             <UserContext.Consumer>
                 {
@@ -92,9 +113,31 @@ class User extends React.Component{
                                         {"\""+book.name+"\""}
                                     </div>
                                 )}):""}
-                                {this.state.isBanned?<div> Вы заблокированы. Причина { this.state.banReason}</div>:""}
-                                <a><button onClick={block}>Заблокировать</button></a>
+                                <div style={this.state.login===context.login?{display:"none"}:{display:"inherit"}}>
+                                    <div>
+                                        <a>
+                                            <button onClick={
+                                            ()=>{
+                                                toggleBlock(this.state.id, this.state.isBanned, context.wayToApi, this)
+                                            }
+                                        }>
+                                            {!this.state.isBanned?"Заблокировать":"Разблокировать"}
+                                        </button>
+                                        </a>
+                                    </div>
+                                    <a><button onClick={
+                                        ()=>{
+                                            toggleAdmin(this.state.id, this.state.isAdmin, context.wayToApi, this)
+                                        }
+                                    }>
+                                        {!this.state.isAdmin?"Дать права администратора":"Забрать права администратора"}
+                                    </button></a>
+                                </div>
+                                <div style={{color: "red"}}>
+                                    {this.state.isBanned?"Заблокирован! Причина: "+this.state.banReason:""}
+                                </div>
                             </div>
+
                         )
                     }
                 }

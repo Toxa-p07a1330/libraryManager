@@ -101,11 +101,7 @@ function  getDataFromSQLite(request){
 }
 
 function sendDataToClient(request, responseTarget){
-   // console.log(request);
-
-
-
-    getDataFromSQLite(request).then(
+      getDataFromSQLite(request).then(
         (result)=> {
         //console.log(result);
         responseTarget.write(JSON.stringify(result));
@@ -114,7 +110,6 @@ function sendDataToClient(request, responseTarget){
     },
         (error)=>console.log(error)
     );
-    return 1;
 }
 function parser(tableName, args, responseTarget){
 
@@ -231,10 +226,40 @@ function registrate(url, response){
 
 
 }
+function unblock(id, response){
+    let requestSQL = `UPDATE user set isBanned=\'0\', banReason = \'\' where id=\'${id}\'`;
+    sendDataToClient(requestSQL, response);
+}
+function block(id, reason, response){
+    let requestSQL = `UPDATE user set isBanned=\'1\', banReason = \'${reason}\' where id=\'${id}\'`;
+    sendDataToClient(requestSQL, response);
+};
+function toggleBlock(url, response){
+   let objParams = requestParamsToObjest(url);
+   console.log(objParams)
+   if(objParams.isBanned=='1'){
+       unblock(objParams.id, response);
+   }
+   else
+       block(objParams.id, objParams.reason, response)
+}
 
-function tryLogin(url, response){
-    url = url.replace("login", "user")
-    parceRequest(url, response)
+function setAdmin(id, response){
+    let requestSQL = `UPDATE user set isAdmin=\'0\' where id=\'${id}\'`;
+    sendDataToClient(requestSQL, response);
+}
+function setUser(id, response){
+    let requestSQL = `UPDATE user set isAdmin=\'1\' where id=\'${id}\'`;
+    sendDataToClient(requestSQL, response);
+};
+function toggleAdmin(url, response){
+    let objParams = requestParamsToObjest(url);
+    console.log(objParams)
+    if(objParams.isAdmin!=='1'){
+        setUser(objParams.id, response);
+    }
+    else
+        setAdmin(objParams.id, response)
 }
 
 
@@ -255,11 +280,15 @@ http.createServer(function(request, response){
             if (request.url.split("/")[2]==="registration")
                 registrate(request.url, response);
             else
-                if(request.url.split("/")[2]==="ban"){
-                    ban(request.url, response);
+                if(request.url.split("/")[2]==="toggleBlock"){
+                    toggleBlock(request.url, response);
                 }
                 else
-                    parceRequest(request.url, response);
+                    if(request.url.split("/")[2]==="toggleAdmin"){
+                        toggleAdmin(request.url, response);
+                    }
+                    else
+                        parceRequest(request.url, response);
         }
     }
 

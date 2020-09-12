@@ -21,7 +21,6 @@ class Users extends React.Component{
                         (response)=>{
                             response.json().then(
                                 (json)=>{
-                                    console.log(123)
                                     if(this.state.users === undefined){
                                         this.setState({users:json})
                                         console.log(json)

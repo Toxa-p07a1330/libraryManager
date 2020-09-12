@@ -28,7 +28,6 @@ function setCookie(name, value, options = {}) {
 
 class Login extends React.Component{
     render() {
-
         let style = {
             marginLeft: "25%",
             marginTop: "15%",
@@ -59,23 +58,27 @@ class Login extends React.Component{
                                         <input type="button" value="Войти" onClick={()=>{
                                         let login = document.getElementById("login").value;
                                         let password = document.getElementById("password").value;
-                                        let remember = document.getElementById("remember").checked;;
+                                        let remember = document.getElementById("remember").checked;
                                         let api = context.wayToApi + `user/?login=${login}&password=${password}`;
                                         fetch(api).then(
                                             (response)=>{
                                                 response.json().then((json)=>{
                                                     if (json[0]){
-                                                        context.setAuth(json[0].login)
-                                                        setCookie("login", login);
-                                                        if (json[0].isAdmin){
-                                                            context.toggleAdmin();
-                                                            setCookie("isAdmin", json[0].isAdmin)
-                                                        };
-                                                        if (remember){
-                                                            document.cookie = `isAdmin= ${ json[0].isAdmin}; expires = Thu, 01 Jan 2038 00:00:00 GMT`;
-                                                            document.cookie = `login= ${json[0].login}; expires = Thu, 01 Jan 2038 00:00:00 GMT`;
+                                                        if (json[0].isBanned)
+                                                            alert("Вы были заблокированы...")
+                                                        else {
+                                                            context.setAuth(json[0].login)
+                                                            setCookie("login", login);
+                                                            if (json[0].isAdmin) {
+                                                                context.toggleAdmin();
+                                                                setCookie("isAdmin", json[0].isAdmin)
+                                                            }
+                                                            ;
+                                                            if (remember) {
+                                                                document.cookie = `isAdmin= ${json[0].isAdmin}; expires = Thu, 01 Jan 2038 00:00:00 GMT`;
+                                                                document.cookie = `login= ${json[0].login}; expires = Thu, 01 Jan 2038 00:00:00 GMT`;
+                                                            }
                                                         }
-
                                                     }
                                                     else
                                                         alert("Неправильный логин или пароль");
