@@ -194,12 +194,12 @@ function registrate(url, response){
                             getDataFromSQLite("SELECT * FROM USER WHERE email= \'"+user.email+"\'").then(
                                 (responseEmail)=>{
                                     if (responseEmail.length===0){
-                                        response.write("{success: true}");
+                                        response.write(JSON.stringify({success:true}));
                                         writeNewUserToDatabase(user);
                                         response.end();
                                     }
                                     else {
-                                        response.write("{email: false}");
+                                        response.write(JSON.stringify({success:false, reason:"Email"}))
                                         response.end();
                                     }
                                 },
@@ -209,7 +209,7 @@ function registrate(url, response){
                             )
                         }
                         else {
-                            response.write("{mobilePhone: false}");
+                            response.write(JSON.stringify({success:false, reason:"Номер телефона "}))
                             response.end();
                         }
                     },
@@ -219,7 +219,7 @@ function registrate(url, response){
                 )
             }
             else {
-                response.write("{login: false}");
+                response.write(JSON.stringify({success:false, reason:"Логин"}))
                 response.end();
             }
 
@@ -255,8 +255,9 @@ http.createServer(function(request, response){
             if (request.url.split("/")[2]==="registration")
                 registrate(request.url, response);
             else
-                if (request.url.split("/")[2]==="login")
-                    tryLogin(request.url, response)
+                if(request.url.split("/")[2]==="ban"){
+                    ban(request.url, response);
+                }
                 else
                     parceRequest(request.url, response);
         }

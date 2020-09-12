@@ -30,9 +30,13 @@ class Login extends React.Component{
     render() {
 
         let style = {
-            paddingLeft: "100%",
-            marginTop: "50%",
-            display: "inline-block"
+            marginLeft: "25%",
+            marginTop: "15%",
+            padding:"3%",
+            display: "inline-block",
+            borderColor: "#cfc78c",
+            borderStyle: "inset",
+            borderWidth: "5px"
         }
         return (
             <UserContext.Consumer>
@@ -56,7 +60,7 @@ class Login extends React.Component{
                                         let login = document.getElementById("login").value;
                                         let password = document.getElementById("password").value;
                                         let remember = document.getElementById("remember").checked;;
-                                        let api = context.wayToApi + `login/?login=${login}&password=${password}`;
+                                        let api = context.wayToApi + `user/?login=${login}&password=${password}`;
                                         fetch(api).then(
                                             (response)=>{
                                                 response.json().then((json)=>{
