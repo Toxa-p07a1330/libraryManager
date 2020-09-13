@@ -94,7 +94,7 @@ class Storage extends React.Component{
                                                 if(currentTime>closeTime)
                                                     ret = "Откроется через "+Math.floor((24*60+openTime-currentTime)/60)+" часов "
                                                         +(24*60+openTime-currentTime)%60+" минут(ы)";
-                                                ret = ret.replace("0 часов", "");
+                                                ret = ret.replace(" 0 часов", "");
 
                                                 return ret;
 

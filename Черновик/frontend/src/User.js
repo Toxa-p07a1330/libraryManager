@@ -33,7 +33,8 @@ class User extends React.Component{
     }
     style = {
         display: "inline-block",
-        width: "31%",
+        minWidth: "30%",
+        maxWidth:"30%",
         height: "40%",
         padding: "1%",
         borderColor: "#cfc78c",

@@ -16,6 +16,7 @@ class Context extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            id: getCookie("id"),
             isAuth: !!getCookie("login"),
             isAdmin: getCookie("isAdmin"),
             login: getCookie("login"),
