@@ -78,7 +78,14 @@ this block of functions returns JSON representation of object
 returns JSON string of rows ejected froms corresponding table with this fields
 */
 
+function log(loggingSQL){
 
+        getDataFromSQLite(loggingSQL).then(
+            (resolve)=>{console.log("logged")},
+            (reject)=>{
+                console.log(reject)
+            })
+}
 function  getDataFromSQLite(request){
     let promise;
     console.log(request)
@@ -103,7 +110,6 @@ function  getDataFromSQLite(request){
 function sendDataToClient(request, responseTarget){
       getDataFromSQLite(request).then(
         (result)=> {
-        //console.log(result);
         responseTarget.write(JSON.stringify(result));
         responseTarget.end();
 
@@ -176,6 +182,9 @@ function writeNewUserToDatabase(user){
     getDataFromSQLite(request).then(
         (response)=>{console.log(response)},
         (reject)=>{console.log(reject)});
+    let loggingSQL = `insert into history (operation, date) values 
+        (${"\'Пользователь №"+user.id+" зарегистрирован\'"}, \'${new Date().toString()}\')`;
+    log(loggingSQL);
 }
 function registrate(url, response){
     let user = requestParamsToObjest(url);
@@ -229,10 +238,17 @@ function registrate(url, response){
 function unblock(id, response){
     let requestSQL = `UPDATE user set isBanned=\'0\', banReason = \'\' where id=\'${id}\'`;
     sendDataToClient(requestSQL, response);
+    let loggingSQL = `insert into history (operation, date) values 
+        (${"\'Пользователь №"+id+" разблокирован.\'"}, \'${new Date().toString()}\')`;
+    log(loggingSQL);
+
 }
 function block(id, reason, response){
     let requestSQL = `UPDATE user set isBanned=\'1\', banReason = \'${reason}\' where id=\'${id}\'`;
     sendDataToClient(requestSQL, response);
+    let loggingSQL = `insert into history (operation, date) values 
+        (${"\'Пользователь №"+id+" заблокирован. Причина: "+reason+"\'"}, \'${new Date().toString()}\')`;
+    log(loggingSQL);
 };
 function toggleBlock(url, response){
    let objParams = requestParamsToObjest(url);
@@ -247,10 +263,16 @@ function toggleBlock(url, response){
 function setAdmin(id, response){
     let requestSQL = `UPDATE user set isAdmin=\'0\' where id=\'${id}\'`;
     sendDataToClient(requestSQL, response);
+    let loggingSQL = `insert into history (operation, date) values 
+        (${"\'Пользователь №"+id+" Назначен администратором\'"}, \'${new Date().toString()}\')`;
+    log(loggingSQL);
 }
 function setUser(id, response){
     let requestSQL = `UPDATE user set isAdmin=\'1\' where id=\'${id}\'`;
     sendDataToClient(requestSQL, response);
+    let loggingSQL = `insert into history (operation, date) values 
+        (${"\'Администратор №"+id+" понижен в правах\'"}, \'${new Date().toString()}\')`;
+    log(loggingSQL);
 };
 function toggleAdmin(url, response){
     let objParams = requestParamsToObjest(url);
@@ -268,11 +290,17 @@ function toggleBook(url, response){
         let requestSQL = `UPDATE book set takersID=\'${objParams.takersID}\' where id=\'${objParams.id}\'`;
         console.log(requestSQL);
         sendDataToClient(requestSQL, response);
+        let loggingSQL = `insert into history (operation, date) values 
+        (${"\'Книга №"+objParams.id+" взята пользователем №"+objParams.takersID+"\'"}, \'${new Date().toString()}\')`;
+        log(loggingSQL);
     }
     else {
         let requestSQL = `UPDATE book set takersID=\'\' where id=\'${objParams.id}\'`;
-        console.log(requestSQL);
         sendDataToClient(requestSQL, response);
+        let loggingSQL = `insert into history (operation, date) values 
+        (${"\'Книга №"+objParams.id+" сдана\'"}, \'${new Date().toString()}\')`;
+        log(loggingSQL);
+
     }
 }
 

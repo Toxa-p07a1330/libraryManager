@@ -17,9 +17,7 @@ class Books extends React.Component{
     render() {
         return(<UserContext.Consumer>
                 {(context)=>{
-                    let wayWithFilter = context.wayToApi+"book/" +window.location.search;
-                    console.log(wayWithFilter)
-                    fetch(wayWithFilter).then(
+                    fetch(context.wayToApi+"book/"+window.location.search).then(
                         (response)=>{
                             response.json().then(
                                 (json)=>{

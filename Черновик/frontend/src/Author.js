@@ -85,11 +85,11 @@ class Author extends React.Component{
                                     {this.state.data?this.state.data.diedAt:""}
                                 </div>
                                 <div>
-                                        <a href={"books/?authorID="+(this.state.data?this.state.data.id:"")}>
-                                            <button>
-                                                Перейти к книгам
-                                            </button>
-                                        </a>
+                                    <a href={"books/?authorID="+(this.state.data?this.state.data.id:"")}>
+                                        <button>
+                                            Перейти к книгам
+                                        </button>
+                                    </a>
                                 </div>
                             </div>
 
@@ -101,4 +101,3 @@ class Author extends React.Component{
     }
 }
 export default Author;
-
