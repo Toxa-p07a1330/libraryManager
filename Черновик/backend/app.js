@@ -344,6 +344,13 @@ function toggleBook(url, response){
     }
 }
 
+function manageMail (url, response){
+    let objParams = requestParamsToObjest(url);
+    console.log(objParams)
+    sendEmail(objParams.email, objParams.message)
+    response.end();
+
+}
 http.createServer(function(request, response){
 
 
@@ -374,7 +381,11 @@ http.createServer(function(request, response){
                             toggleBook(request.url, response);
                         }
                         else
-                            parceRequest(request.url, response);
+                            if(request.url.split("/")[2]==="sendMail"){
+                                manageMail(request.url, response);
+                            }
+                            else
+                                parceRequest(request.url, response);
         }
     }
 
