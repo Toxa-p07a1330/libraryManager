@@ -133,6 +133,17 @@ class User extends React.Component{
                                     }>
                                         {!this.state.isAdmin?"Дать права администратора":"Забрать права администратора"}
                                     </button></a>
+                                    <button onClick={()=>{
+                                        let text = prompt("Введите текст сообщения");
+                                        if (!text)
+                                            alert("Сообщение не должно быть пустым!")
+                                        else
+                                        {
+                                            let email = this.state.email;
+                                            let watToApi = context.wayToApi+"sendMail/?email="+email+"&message="+text;
+                                            fetch(watToApi);
+                                        }
+                                    }}>Отправить сообщение</button>
                                 </div>
                                 <div style={{color: "red"}}>
                                     {this.state.isBanned?"Заблокирован!"+
