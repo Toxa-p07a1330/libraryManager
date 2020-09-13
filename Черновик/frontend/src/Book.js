@@ -26,14 +26,13 @@ class Book extends React.Component{
     defineManagement = (context, state)=>{
         let manager = "";
         if(context.id){
-            console.log(state)
             if (state.data.takersID) {
                 if (state.data.takersID == context.id)
                     manager = <button onClick={()=>{
                         this.giveBook(context)
                     }}>Сдать</button>
                 else
-                    manager = "Книга занята"
+                    manager = <div style={{color: "#8b0000"}}>Книга занята</div>
             }
             else
                 manager = <button onClick={()=>{
@@ -41,7 +40,7 @@ class Book extends React.Component{
                 }}>Взять</button>
         }
         else
-            manager = "Войдите"
+            manager = <a href={"/login"}>Войдите, что бы взять книгу</a>
         return {manageBook: manager};
     }
     takeBook = (context)=>{
@@ -112,7 +111,6 @@ class Book extends React.Component{
                                                                 newState.author = json
                                                                 Object.assign(newState, this.defineManagement(context, newState))
                                                                 this.setState(newState)
-                                                                console.log(this.state)
                                                             },
                                                             (reject)=>{
                                                                 console.log(reject)

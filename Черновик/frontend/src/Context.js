@@ -52,6 +52,10 @@ class Context extends React.Component{
                 this.state.stack["id_"+(this.state.stack.size-1)] = null;
                 this.state.stack.size--;
                 return reterner;
+            },
+            bookFilter: "",
+            setBookFilter: (filter)=>{
+                this.state.bookFilter = filter;
             }
 
         }
