@@ -41,7 +41,7 @@ class Book extends React.Component{
                 }}>Взять</button>
         }
         else
-            manager = "Войдите"
+            manager = "Войдите, что бы взять книгу"
         return {manageBook: manager};
     }
     takeBook = (context)=>{
