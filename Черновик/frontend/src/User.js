@@ -54,23 +54,18 @@ class User extends React.Component{
                             let id = context.removeFromStack()
                             let wayToAPI =context.wayToApi+"user/&id="+id;
                             let newState = {};
-                            console.log(wayToAPI)
                             if (!this.state.isLoaded)
                             {
                                 fetch(wayToAPI).then(
                                     (response)=>{
                                         response.json().then(
                                             (json)=>{
-                                                console.log(json)
                                                 newState = json[0];
-                                                console.log(newState)
                                                 wayToAPI = context.wayToApi+"book/?takersID="+id;
-                                                console.log(wayToAPI)
                                                 fetch(wayToAPI).then(
                                                     (response)=>{
                                                         response.json().then(
                                                             (json)=>{
-                                                                console.log(json)
                                                                 let booksInfo = {booksInfo: json}
                                                                 newState = Object.assign(newState, booksInfo);
                                                                 this.setState( newState);
@@ -94,9 +89,12 @@ class User extends React.Component{
                                     (reject)=>{
                                         console.log(reject)
                                     });
-
-
                             }
+                        }
+                        let isActive = ()=>{
+                            if (!this.state.isLoaded)
+                                return false;
+                            return this.state.id !== context.id
                         }
                         return(
 
@@ -114,7 +112,7 @@ class User extends React.Component{
                                         {"\""+book.name+"\""}
                                     </div>
                                 )}):""}
-                                <div style={this.state.login===context.login?{display:"none"}:{display:"inherit"}}>
+                                <div style={!isActive()?{display:"none"}:{display:"inherit"}}>
                                     <div>
                                         <a>
                                             <button onClick={

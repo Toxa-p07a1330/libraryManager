@@ -16,7 +16,7 @@ class Profile extends React.Component{
                 {
                     (context)=>{
                         {
-                            let wayToAPI = context.wayToApi+"user/?login="+context.login;
+                            let wayToAPI = context.wayToApi+"user/?id="+context.id;
                             let newState = {};
                             console.log(wayToAPI)
                             if (!this.state.isLoaded)

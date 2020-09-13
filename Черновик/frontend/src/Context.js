@@ -17,7 +17,7 @@ class Context extends React.Component{
         super(props);
         this.state = {
             id: getCookie("id"),
-            isAuth: !!getCookie("login"),
+            isAuth: !!getCookie("id"),
             isAdmin: getCookie("isAdmin"),
             login: getCookie("login"),
             toggleAdmin: ()=>{
@@ -25,15 +25,15 @@ class Context extends React.Component{
                 console.log("isAdmin: "+this.isAdmin)
 
             },
-            setAuth: (login)=>{
-                this.setState({isAuth: !!login});
-                this.setState({login: login});
-                console.log(login+ " logged");
+            setAuth: (id)=>{
+                this.setState({isAuth: !!id});
+                this.setState({id: id});
+                console.log(id+ " logged");
             },
             exit:()=>{
-                this.setState({isAuth: false, isAdmin: false, login:null});
+                this.setState({isAuth: false, isAdmin: false, login:null, id: null});
                 document.cookie = "isAdmin= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-                document.cookie = "login= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+                document.cookie = "id= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
             },
             clearDataOnExit: true,
             toggleClearDataOnExit: ()=>{

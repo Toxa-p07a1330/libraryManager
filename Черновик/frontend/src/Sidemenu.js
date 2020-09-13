@@ -16,6 +16,7 @@ class Sidemenu extends React.Component{
         return (
             <UserContext.Consumer>
                 {(context)=>{
+                    let isAuth = context.id;
                     return (
                         <div style={this.style}>
                             <ul>
@@ -23,12 +24,12 @@ class Sidemenu extends React.Component{
                                 <li><a href = {"/books"}>Книги</a></li>
                                 <li><a href={"/authors"}>Авторы</a></li>
                                 <li><a href={"/storages"}>Отделения библиотеки</a></li>
-                                {context.isAuth?<li><a href={"/profile"}>Мой профиль</a></li>:""}
-                                {context.isAuth?"":<li><a href={"/login"}>Вход</a></li>}
-                                {context.isAuth?"":<li><a href={"/registration"}>Регистрация</a></li>}
+                                {isAuth?<li><a href={"/profile"}>Мой профиль</a></li>:""}
+                                {isAuth?"":<li><a href={"/login"}>Вход</a></li>}
+                                {isAuth?"":<li><a href={"/registration"}>Регистрация</a></li>}
                                 {context.isAdmin?<li><a href={"/users"}>Управление пользователями</a></li>:""}
                                 {context.isAdmin?<li><a href={"/history"}>История операций</a></li>:""}
-                                {context.isAuth?<li><a onClick={context.exit} href="/">Выход</a></li>:""}
+                                {isAuth?<li><a onClick={context.exit} href="/">Выход</a></li>:""}
                             </ul>
                         </div>
                     )

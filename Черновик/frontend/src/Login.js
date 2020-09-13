@@ -67,8 +67,8 @@ class Login extends React.Component{
                                                         if (json[0].isBanned)
                                                             alert("Вы были заблокированы...")
                                                         else {
-                                                            context.setAuth(json[0].login)
-                                                            setCookie("login", login);
+                                                            context.setAuth(json[0].id)
+                                                            setCookie("id", json[0].id);
                                                             if (json[0].isAdmin) {
                                                                 context.toggleAdmin();
                                                                 setCookie("isAdmin", json[0].isAdmin)
@@ -76,7 +76,7 @@ class Login extends React.Component{
                                                             ;
                                                             if (remember) {
                                                                 document.cookie = `isAdmin= ${json[0].isAdmin}; expires = Thu, 01 Jan 2038 00:00:00 GMT`;
-                                                                document.cookie = `login= ${json[0].login}; expires = Thu, 01 Jan 2038 00:00:00 GMT`;
+                                                                document.cookie = `id= ${json[0].id}; expires = Thu, 01 Jan 2038 00:00:00 GMT`;
                                                             }
                                                         }
                                                     }
