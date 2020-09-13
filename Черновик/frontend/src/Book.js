@@ -6,8 +6,8 @@ class Book extends React.Component{
         super();
         this.state = {
             isLoaded: false,
+            manageBook: undefined,
         }
-
     }
     style = {
         display: "inline-block",
@@ -21,12 +21,75 @@ class Book extends React.Component{
     }
 
     getFullAuthorName = (data)=>{
-
             return data.fName + " "+data.tName+" "+data.sName
-        //data.fName + " "+data.sName?data.sName:""+" "+data.tName?data.tName:""
     }
-    render() {
+    defineManagement = (context, state)=>{
+        let manager = "";
+        if(context.id){
+            console.log(state)
+            if (state.data.takersID) {
+                if (state.data.takersID == context.id)
+                    manager = <button onClick={()=>{
+                        this.giveBook(context)
+                    }}>Сдать</button>
+                else
+                    manager = "Книга занята"
+            }
+            else
+                manager = <button onClick={()=>{
+                    this.takeBook(context)
+                }}>Взять</button>
+        }
+        else
+            manager = "Войдите"
+        return {manageBook: manager};
+    }
+    takeBook = (context)=>{
+        let wayToApi = context.wayToApi;
+        let bookId = this.state.data.id;
+        let request = wayToApi+"toggleBook/?id="+bookId+"&takersID="+context.id;
+        fetch(request).then(
+            (response)=>{
+                response.json().then(
+                    (json)=>{
+                        let manager = <button onClick={()=>{
+                            this.giveBook(context)
+                        }}>Сдать</button>
+                        this.setState(Object.assign(this.state, {manageBook: manager}))
+                    },
+                    (reject)=>{
+                    console.log(reject)
+                    }
+                )
+            },
+            (reject)=>{
+                console.log(reject)
+            })
+    }
+    giveBook = (context)=>{
+        let wayToApi = context.wayToApi;
+        let bookId = this.state.data.id;
+        let request = wayToApi+"toggleBook/?id="+bookId;
+        fetch(request).then(
+            (response)=>{
+                response.json().then(
+                    (json)=>{
+                        let manager = <button onClick={()=>{
+                            this.takeBook(context)
+                        }}>Взять</button>
+                        this.setState(Object.assign(this.state, {manageBook: manager}))
+                    },
+                    (reject)=>{
+                        console.log(reject)
+                    }
+                )
+        },
+            (reject)=>{
+                console.log(reject)
+            })
+    }
 
+    render() {
         return (
             <UserContext.Consumer>
                 {
@@ -47,7 +110,9 @@ class Book extends React.Component{
                                                         response.json().then(
                                                             (json)=>{
                                                                 newState.author = json
+                                                                Object.assign(newState, this.defineManagement(context, newState))
                                                                 this.setState(newState)
+                                                                console.log(this.state)
                                                             },
                                                             (reject)=>{
                                                                 console.log(reject)
@@ -91,7 +156,7 @@ class Book extends React.Component{
                                     Жанр: {isLoaded?this.state.data.genre:""}
                                 </div>
                                 <div>
-                                    рфтвдуЕфлштп
+                                    {isLoaded?this.state.manageBook:""}
                                 </div>
                             </div>
                         )

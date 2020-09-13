@@ -261,7 +261,20 @@ function toggleAdmin(url, response){
     else
         setAdmin(objParams.id, response)
 }
-
+function toggleBook(url, response){
+    let objParams = requestParamsToObjest(url);
+    console.log(objParams)
+    if(objParams.takersID!==undefined){
+        let requestSQL = `UPDATE book set takersID=\'${objParams.takersID}\' where id=\'${objParams.id}\'`;
+        console.log(requestSQL);
+        sendDataToClient(requestSQL, response);
+    }
+    else {
+        let requestSQL = `UPDATE book set takersID=\'\' where id=\'${objParams.id}\'`;
+        console.log(requestSQL);
+        sendDataToClient(requestSQL, response);
+    }
+}
 
 http.createServer(function(request, response){
 
@@ -288,7 +301,11 @@ http.createServer(function(request, response){
                         toggleAdmin(request.url, response);
                     }
                     else
-                        parceRequest(request.url, response);
+                        if(request.url.split("/")[2]==="toggleBook"){
+                            toggleBook(request.url, response);
+                        }
+                        else
+                            parceRequest(request.url, response);
         }
     }
 
