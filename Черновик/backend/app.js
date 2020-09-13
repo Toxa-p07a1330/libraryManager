@@ -62,7 +62,7 @@ function initializeMap() {
     tables.set("book", new Book());
 }
 
-function sendEmail(email){
+function sendEmail(email, message){
     let transporter = nodemailer.createTransport({
         host: "smtp.yandex.com",
         secureConnection: false,
@@ -80,8 +80,7 @@ function sendEmail(email){
         from: "libManager@yandex.ru",
         to: email,
         subject: "Message from libManager",
-        text: "This message was sent from Node js server.",
-        html: "Спасибо за регистрацию! Вы можете пользоваться данным почтовым ядресом для решения проблем или отправки обратной связи"
+        html: message
     }).then((resolve)=>{
         console.log(resolve)
     },
@@ -94,23 +93,24 @@ function log(loggingSQL){
         getDataFromSQLite(loggingSQL).then((resolve, reject)=>{console.log(reject)});
 }
 function  getDataFromSQLite(request){
-    let promise;
+
     console.log(request)
     let sqlite3 = require('sqlite3').verbose();
     let db = new sqlite3.Database('../database/database.db');
-    promise = new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject)=>{
         db.serialize(()=>{
             db.all(request, (err, rows)=>{
-                if (err)
+                if (!err)
+                {
+                   resolve(rows)
+                }
+                else {
                     reject(err);
-                else
-                    resolve(rows);
-
+                }
             })
         })
         db.close();
     });
-    return promise;
 }
 
 function sendDataToClient(request, responseTarget){
@@ -118,7 +118,6 @@ function sendDataToClient(request, responseTarget){
         (result)=> {
         responseTarget.write(JSON.stringify(result));
         responseTarget.end();
-
     },
         (error)=>console.log(error)
     );
@@ -185,7 +184,7 @@ function writeNewUserToDatabase(user){
     getDataFromSQLite(request).then(
         (response)=>{console.log(response)},
         (reject)=>{console.log(reject)});
-    sendEmail(user.email);
+    sendEmail(user.email, `${user.fName}, cпасибо за регистрацию! Вы можете пользоваться данным почтовым ядресом для решения проблем или отправки обратной связи`);
     let loggingSQL = `insert into history (operation, date) values 
         (${"\'Пользователь №"+user.id+" зарегистрирован\'"}, \'${new Date().toString()}\')`;
     log(loggingSQL);
@@ -245,6 +244,14 @@ function unblock(id, response){
     let loggingSQL = `insert into history (operation, date) values 
         (${"\'Пользователь №"+id+" разблокирован.\'"}, \'${new Date().toString()}\')`;
     log(loggingSQL);
+    getDataFromSQLite(`SELECT * FROM USER WHERE id=${id};`).then(
+        (response)=>{
+            sendEmail(response[0].email, `${response[0].fName}, по решению администрации, бан был снят` )
+        },
+        (reject)=>{
+            console.log(reject);
+        }
+    )
 
 }
 function block(id, reason, response){
@@ -253,15 +260,26 @@ function block(id, reason, response){
     let loggingSQL = `insert into history (operation, date) values 
         (${"\'Пользователь №"+id+" заблокирован. Причина: "+reason+"\'"}, \'${new Date().toString()}\')`;
     log(loggingSQL);
+    getDataFromSQLite(`SELECT * FROM USER WHERE id=${id};`).then(
+        (response)=>{
+            if(reason)
+                sendEmail(response[0].email, `${response[0].fName}, вы были забанены за ${reason}.
+            Для снятия бана свяжитесь с администратором`)
+        },
+        (reject)=>{
+            console.log(reject);
+        }
+    )
 };
 function toggleBlock(url, response){
    let objParams = requestParamsToObjest(url);
-   console.log(objParams)
-   if(objParams.isBanned=='1'){
-       unblock(objParams.id, response);
+   let isBanned = objParams.isBanned === "true";
+   if(isBanned){
+       unblock(objParams.id, response)
    }
    else
        block(objParams.id, objParams.reason, response)
+
 }
 
 function setAdmin(id, response){
@@ -270,6 +288,15 @@ function setAdmin(id, response){
     let loggingSQL = `insert into history (operation, date) values 
         (${"\'Пользователь №"+id+" Назначен администратором\'"}, \'${new Date().toString()}\')`;
     log(loggingSQL);
+
+    getDataFromSQLite(`SELECT * FROM USER WHERE id=${id};`).then(
+        (response)=>{
+            sendEmail(response[0].email, `${response[0].fName}, по решению администрации, у вас изъяты права администратора` )
+        },
+        (reject)=>{
+            console.log(reject);
+        }
+    )
 }
 function setUser(id, response){
     let requestSQL = `UPDATE user set isAdmin=\'1\' where id=\'${id}\'`;
@@ -277,6 +304,15 @@ function setUser(id, response){
     let loggingSQL = `insert into history (operation, date) values 
         (${"\'Администратор №"+id+" понижен в правах\'"}, \'${new Date().toString()}\')`;
     log(loggingSQL);
+
+    getDataFromSQLite(`SELECT * FROM USER WHERE id=${id};`).then(
+        (response)=>{
+            sendEmail(response[0].email, `${response[0].fName}, вам выданы права администраторат` )
+        },
+        (reject)=>{
+            console.log(reject);
+        }
+    )
 };
 function toggleAdmin(url, response){
     let objParams = requestParamsToObjest(url);
