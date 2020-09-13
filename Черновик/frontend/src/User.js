@@ -92,9 +92,11 @@ class User extends React.Component{
                             }
                         }
                         let isActive = ()=>{
+                            console.log(this.state.id)
+                            console.log(context.id)
                             if (!this.state.isLoaded)
                                 return false;
-                            return this.state.id !== context.id
+                            return this.state.id - context.id;
                         }
                         return(
 
@@ -133,7 +135,8 @@ class User extends React.Component{
                                     </button></a>
                                 </div>
                                 <div style={{color: "red"}}>
-                                    {this.state.isBanned?"Заблокирован! Причина: "+this.state.banReason:""}
+                                    {this.state.isBanned?"Заблокирован!"+
+                                        (this.state.banReason?" Причина: "+this.state.banReason:""):""}
                                 </div>
                             </div>
 
