@@ -33,7 +33,7 @@ class Book extends React.Component{
                         this.giveBook(context)
                     }}>Сдать</button>
                 else
-                    manager = "Книга занята"
+                    manager = <div><br/>Книга занята</div>
             }
             else
                 manager = <button onClick={()=>{
@@ -41,7 +41,7 @@ class Book extends React.Component{
                 }}>Взять</button>
         }
         else
-            manager = "Войдите, что бы взять книгу"
+            manager = <div><br/>Войдите, что бы взять книгу</div>
         return {manageBook: manager};
     }
     takeBook = (context)=>{

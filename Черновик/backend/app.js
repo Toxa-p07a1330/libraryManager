@@ -63,6 +63,31 @@ function initializeMap() {
 }
 
 function sendEmail(email){
+    let transporter = nodemailer.createTransport({
+        host: "smtp.yandex.com",
+        secureConnection: false,
+        port: 587,
+        requiresAuth: true,
+        secure: false,
+        auth: {
+            type: "login",
+            user: "libManager@yandex.ru",
+            pass: "libManagerPassword"
+        }
+    });
+
+    transporter.sendMail({
+        from: "libManager@yandex.ru",
+        to: email,
+        subject: "Message from libManager",
+        text: "This message was sent from Node js server.",
+        html: "Спасибо за регистрацию! Вы можете пользоваться данным почтовым ядресом для решения проблем или отправки обратной связи"
+    }).then((resolve)=>{
+        console.log(resolve)
+    },
+        (reject)=>{
+            console.log(reject)
+        });
 }
 
 function log(loggingSQL){
@@ -160,6 +185,7 @@ function writeNewUserToDatabase(user){
     getDataFromSQLite(request).then(
         (response)=>{console.log(response)},
         (reject)=>{console.log(reject)});
+    sendEmail(user.email);
     let loggingSQL = `insert into history (operation, date) values 
         (${"\'Пользователь №"+user.id+" зарегистрирован\'"}, \'${new Date().toString()}\')`;
     log(loggingSQL);
@@ -283,6 +309,7 @@ function toggleBook(url, response){
 }
 
 http.createServer(function(request, response){
+
 
     request.url = decodeURI(request.url);
     initializeMap();
