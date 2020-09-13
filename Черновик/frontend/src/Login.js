@@ -55,7 +55,7 @@ class Login extends React.Component{
                                         <input type={"checkbox"} name="remember" id = "remember"/>
                                     </div>
                                     <a href={"/home"}>
-                                        <input type="button" value="Войти" onClick={()=>{
+                                        <button value="Войти" onClick={()=>{
                                         let login = document.getElementById("login").value;
                                         let password = document.getElementById("password").value;
                                         let remember = document.getElementById("remember").checked;
@@ -86,7 +86,7 @@ class Login extends React.Component{
                                             },
                                             (reject)=>{console.log(reject)}
                                         )
-                                    }}/>
+                                        }}>Войти</button>
                                         </a>
                                 </form>
 
