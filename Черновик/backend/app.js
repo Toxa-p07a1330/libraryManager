@@ -1,15 +1,5 @@
 const http = require("http");
-
-
-
-//DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
-
-
-
-
-//DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
-
-
+const nodemailer = require('nodemailer');
 class Book{
     id;
     name;
@@ -72,26 +62,17 @@ function initializeMap() {
     tables.set("book", new Book());
 }
 
-/*
-this block of functions returns JSON representation of object
-@args - string of params in form  key=val&key1=val1
-returns JSON string of rows ejected froms corresponding table with this fields
-*/
+function sendEmail(email){
+}
 
 function log(loggingSQL){
-
-        getDataFromSQLite(loggingSQL).then(
-            (resolve)=>{console.log("logged")},
-            (reject)=>{
-                console.log(reject)
-            })
+        getDataFromSQLite(loggingSQL).then((resolve, reject)=>{console.log(reject)});
 }
 function  getDataFromSQLite(request){
     let promise;
     console.log(request)
     let sqlite3 = require('sqlite3').verbose();
     let db = new sqlite3.Database('../database/database.db');
-
     promise = new Promise((resolve, reject)=>{
         db.serialize(()=>{
             db.all(request, (err, rows)=>{
@@ -127,9 +108,6 @@ function parser(tableName, args, responseTarget){
     sendDataToClient(requestSQL, responseTarget);
 
 };
-
-
-
 function requestParamsToObjest  (request){
     let obj = {};
     try {

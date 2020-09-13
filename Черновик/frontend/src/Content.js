@@ -9,6 +9,7 @@ import {UserContext} from "./Context";
 import Profile from "./Profile";
 import Storages from "./Storages";
 import Users from "./Users";
+import History from "./History";
 class Content extends React.Component{
 
     render() {
@@ -35,6 +36,7 @@ class Content extends React.Component{
                                    <Route exact path="/storages" component={Storages}/>
                                    <Route exact path= "/users" component={Users}/>
                                    <Route exact path="/login" component={Login}/>
+                                   <Route exact path="/history" component={History}/>
                                </Switch>
                            </BrowserRouter>
                        </div>
