@@ -32,7 +32,6 @@ class Storage extends React.Component{
                         {
                             let id = context.removeFromStack()
                             let wayToAPI =context.wayToApi+"storage/&id="+id;
-                            console.log(wayToAPI)
                             if (!this.state.isLoaded)
                             {
                                 fetch(wayToAPI).then(

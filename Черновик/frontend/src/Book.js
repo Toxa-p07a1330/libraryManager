@@ -26,7 +26,6 @@ class Book extends React.Component{
     defineManagement = (context, state)=>{
         let manager = "";
         if(context.id){
-            console.log(state)
             if (state.data.takersID) {
                 if (state.data.takersID == context.id)
                     manager = <button onClick={()=>{
@@ -112,7 +111,6 @@ class Book extends React.Component{
                                                                 newState.author = json
                                                                 Object.assign(newState, this.defineManagement(context, newState))
                                                                 this.setState(newState)
-                                                                console.log(this.state)
                                                             },
                                                             (reject)=>{
                                                                 console.log(reject)

@@ -98,7 +98,6 @@ class Registration extends React.Component{
                         (response)=>{
                             response.json().then(
                                 (json)=>{
-                                    console.log(json)
                                     if(json.success){
                                         alert("Вы зарегестрированы! Письмо отправлено на ваш почтовый ящик!")
                                     }

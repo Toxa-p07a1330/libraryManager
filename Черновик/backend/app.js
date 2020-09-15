@@ -273,8 +273,8 @@ function block(id, reason, response){
 };
 function toggleBlock(url, response){
    let objParams = requestParamsToObjest(url);
-   let isBanned = objParams.isBanned === "true";
-   if(isBanned){
+   let isBanned = objParams.isBanned === "true" || objParams.isBanned === "1";
+   if(isBanned ){
        unblock(objParams.id, response)
    }
    else
@@ -346,7 +346,13 @@ function toggleBook(url, response){
 
 function manageMail (url, response){
     let objParams = requestParamsToObjest(url);
-    console.log(objParams)
+    console.log(objParams
+
+
+
+
+
+    )
     sendEmail(objParams.email, objParams.message)
     response.end();
 

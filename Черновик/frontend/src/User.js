@@ -2,13 +2,18 @@ import React from "react";
 import {UserContext} from "./Context";
 
 
-function toggleBlock(id, isBanned, wayToApi, _this){
-    let reason="";
-    if(!isBanned)
+function toggleBlock(id, isBanned, wayToApi, _this) {
+
+    let reason = "";
+    let url = wayToApi + "toggleBlock/?id=" + id + "&isBanned=" + isBanned
+    if (!isBanned) {
         reason = window.prompt("Причина?")
-    let url = wayToApi+"toggleBlock/?id="+id+"&isBanned="+isBanned+"&reason="+reason;
+        url += "&reason=" + reason;
+    }
+
+    console.log(url);
     fetch(url).then(()=>{
-        _this.setState({isBanned: !isBanned})
+        _this.setState({isBanned: !isBanned, banReason:reason})
     }, (reject)=>{
         console.log(reject)
     })
@@ -92,8 +97,7 @@ class User extends React.Component{
                             }
                         }
                         let isActive = ()=>{
-                            console.log(this.state.id)
-                            console.log(context.id)
+
                             if (!this.state.isLoaded)
                                 return false;
                             return this.state.id - context.id;

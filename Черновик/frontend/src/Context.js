@@ -22,13 +22,11 @@ class Context extends React.Component{
             login: getCookie("login"),
             toggleAdmin: ()=>{
                 this.setState({isAdmin: !this.isAdmin})
-                console.log("isAdmin: "+this.isAdmin)
 
             },
             setAuth: (id)=>{
                 this.setState({isAuth: !!id});
                 this.setState({id: id});
-                console.log(id+ " logged");
             },
             exit:()=>{
                 this.setState({isAuth: false, isAdmin: false, login:null, id: null});

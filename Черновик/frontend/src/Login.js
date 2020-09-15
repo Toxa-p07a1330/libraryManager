@@ -49,7 +49,7 @@ class Login extends React.Component{
                                         <input type={"text"} name="login" id = "login"/>
                                     </div>
                                     <div>Пароль
-                                        <input type={"text"} name="password" id = "password"/>
+                                        <input type={"password"} name="password" id = "password"/>
                                     </div>
                                     <div>Запомнить меня на этом устройстве
                                         <input type={"checkbox"} name="remember" id = "remember"/>

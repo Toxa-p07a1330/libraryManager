@@ -23,7 +23,6 @@ class Users extends React.Component{
                                 (json)=>{
                                     if(this.state.users === undefined){
                                         this.setState({users:json})
-                                        console.log(json)
                                     }
                                 },
                                 reason =>console.log(reason)

@@ -23,7 +23,6 @@ class Authors extends React.Component{
                                 (json)=>{
                                     if(this.state.authors === undefined){
                                         this.setState({authors:json})
-                                        console.log(json)
                                     }
                                 },
                                 reason =>console.log(reason)

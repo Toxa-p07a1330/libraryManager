@@ -47,7 +47,6 @@ class Header extends React.Component{
                             (response)=>{
                                 response.json().then(
                                     (json)=>{
-                                        console.log(json)
                                         try {
                                             this.setState({isLoaded: true, login: json[0].login})
                                         }

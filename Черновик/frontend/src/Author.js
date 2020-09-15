@@ -60,7 +60,6 @@ class Author extends React.Component{
                                     (response)=>{
                                         response.json().then(
                                             (json)=>{
-                                                console.log(json[0])
                                                 this.setState({isLoaded: true, data: json[0]});
 
                                             },

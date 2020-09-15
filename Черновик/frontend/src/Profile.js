@@ -25,16 +25,12 @@ class Profile extends React.Component{
                                     (response)=>{
                                         response.json().then(
                                             (json)=>{
-                                                console.log(json)
                                                 newState = json[0];
-                                                console.log(newState)
                                                 wayToAPI = context.wayToApi+"book/?takersID="+newState.id;
-                                                console.log(wayToAPI)
                                                 fetch(wayToAPI).then(
                                                     (response)=>{
                                                         response.json().then(
                                                             (json)=>{
-                                                                console.log(json)
                                                                 let booksInfo = {booksInfo: json}
                                                                 newState = Object.assign(newState, booksInfo);
                                                                 this.setState( newState);
