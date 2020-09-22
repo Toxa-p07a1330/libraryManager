@@ -25,6 +25,7 @@ class Book extends React.Component{
     }
     defineManagement = (context, state)=>{
         let manager = "";
+        console.log(state.data.takersID+" "+context.id)
         if(context.id){
             if (state.data.takersID) {
                 if (state.data.takersID == context.id)
