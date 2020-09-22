@@ -60,7 +60,7 @@ class Users extends React.Component{
                                     context.addToStack(value.id);
                                     return <User/>
                                 }):""
-                            }
+                             }
                         </div>
                     </div>)
                 }}
