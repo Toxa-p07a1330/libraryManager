@@ -370,7 +370,7 @@ function manageMail (url, response){
 }
 http.createServer(function(request, response){
 
-
+	console.log("Start listerning");
     request.url = decodeURI(request.url);
     initializeMap();
     response.setHeader("Content-Type", "application/json; charset=UTF-8");
