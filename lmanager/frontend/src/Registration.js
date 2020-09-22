@@ -126,8 +126,8 @@ class Registration extends React.Component{
                            <div style={style}>
                               <form>
                                            Логин:<input type={"text"} id = "login"/><br/>
-                                           Пароль:<input type={"text"} id = "password"/><br/>
-                                           Повторите пароль:<input type={"text"} id = "r-password"/><br/>
+                                           Пароль:<input type={"password"} id = "password"/><br/>
+                                           Повторите пароль:<input type={"password"} id = "r-password"/><br/>
                                            Имя:<input type={"text"} id = "fName"/><br/>
                                            Фамилия:<input type={"text"} id = "sName"/><br/>
                                            Отчество:<input type={"text"} id = "tName"/><br/>
