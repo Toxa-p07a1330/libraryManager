@@ -100,7 +100,7 @@ class User extends React.Component{
 
                             if (!this.state.isLoaded)
                                 return false;
-                            return this.state.id == context.id;
+                            return this.state.id != context.id;
                         }
                         return(
 
